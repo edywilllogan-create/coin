@@ -33,8 +33,9 @@ app.post('/api/save-email', (req, res) => {
     });
 });
 
-// 4. ROTA PRINCIPAL (INDEX)
-app.get('(.*)', (req, res) => {
+
+// 4. ROTA PRINCIPAL (INDEX) - A BAZUCA
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
