@@ -107,7 +107,7 @@
         .cards-container { position: relative; z-index: 10; display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap; }
         
         .fut-card { width: 320px; height: 480px; position: relative; border-radius: 10px; overflow: hidden; background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #aa771c 100%); border: 2px solid #8a6d3b; box-shadow: 0 15px 35px rgba(0,0,0,0.7); transition: transform 0.5s ease; cursor: pointer; }
-        .fut-card:hover { transform: rotateY(10deg) rotateX(5deg) translateY(-10px); }
+        .fut-card:hover { transform: rotateY(10deg) rotateX(5deg) translateY(-8px); }
         .custom-elite-card { background: transparent !important; border: none !important; box-shadow: none !important; width: 350px; height: 520px; }
         .card-bg-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.3); }
         .custom-inner { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 25px; }
@@ -224,24 +224,26 @@
         }
 
         @media (max-width: 480px) {
-            .hero-left h1 { font-size: 1.8rem; }
-            .draggable-reveal-container { height: 350px; }
-            
-            /* 1. TRUST BAR: Manter tudo em uma linha (Sem quebrar) igual no print */
-            .trust-bar { flex-wrap: nowrap; gap: 5px; padding: 15px 2%; justify-content: space-between; }
-            .logo-item img { height: 14px; }
-            .logo-item span { font-size: 0.5rem; letter-spacing: 1px;}
+            /* ... outros códigos ... */
 
-            /* 2. CARTAS: O segredo para deixar lado a lado. Usamos a escala (zoom out) */
             .cards-container { 
-                flex-direction: row; /* Força ficar na mesma linha */
-                flex-wrap: nowrap; /* Não deixa descer pra próxima linha */
-                transform: scale(0.48); /* Reduz as cartas em 52% para caberem perfeitas juntas */
+                flex-direction: row; 
+                flex-wrap: nowrap; 
+                transform: scale(0.48); 
                 transform-origin: top center;
                 gap: 15px;
-                height: 260px; /* Corta a altura fantasma deixada pela escala para não bugar o site */
+                height: 290px; 
                 margin-bottom: 0;
                 padding: 0;
+                
+                /* ADICIONE ESTA LINHA PARA EMPURRAR AS CARTAS PARA BAIXO */
+                margin-top: 40px; 
+            }
+            
+            /* Dê também um pouco mais de espaço geral à secção */
+            .video-background-section { 
+                min-height: 330px; 
+                padding: 20px 0 10px 0; 
             }
             .video-background-section { min-height: 280px; padding: 10px 0; }
             .roster-section { padding: 40px 2%; }
