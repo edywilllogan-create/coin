@@ -3,10 +3,10 @@ require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 
 // Aqui está o comando exato puxando a variável do seu .env
-const token = process.env.SECRET_telegram; 
+const token = process.env.TELEGRAM_TOKEN;
 
 if (!token) {
-    console.log("❌ ERRO OPSEC: Token do Telegram não encontrado no .env");
+   console.log("❌ ERRO OPSEC: Token do Telegram não encontrado nas Variáveis do Railway!");
     process.exit(1);
 }
 
