@@ -200,7 +200,7 @@
         .whale { color: #f1c40f; } .sniper { color: #3b82f6; } .dev { color: #00A86B; } .user-msg { color: #fff; border-left: 2px solid #fff; padding-left: 5px; }
 
         /* =========================================
-           7. MEDIA QUERIES (RESPONSIVIDADE TOTAL)
+           7. MEDIA QUERIES (O SEGREDO DO MODO DESKTOP NO MOBILE)
         ========================================= */
         @media (max-width: 992px) {
             .hero { flex-direction: column; text-align: center; padding: 40px 5%; }
@@ -212,18 +212,13 @@
         }
 
         @media (max-width: 768px) {
-            nav { flex-direction: column; text-align: center; }
+            nav { flex-direction: column; text-align: center; gap: 10px; }
             .hero-left h1 { font-size: 2.2rem; }
             .hero-left p { font-size: 1rem; }
             .stats-row { flex-direction: column; gap: 20px; align-items: center; border-bottom: none; padding-bottom: 10px;}
             
-            /* Ajuste dos Cartões em Mobile */
-            .cards-container { flex-direction: column; align-items: center; }
-            .fut-card, .custom-elite-card { width: 100%; max-width: 320px; height: 480px; } /* Mantém as proporções em telas pequenas */
-
-            /* Ajuste do Escudo e Formulario */
-            .capture-shield, .glass-security-shield { padding: 20px; }
-            .shield-header h2 { font-size: 1.1rem; }
+            /* Ajuste do Escudo e Formulários */
+            .capture-shield, .glass-security-shield { padding: 20px; width: 95%; margin: 20px auto;}
             
             #sigma-chat-container { width: 90%; right: 5%; bottom: 85px; height: 400px; }
         }
@@ -231,16 +226,32 @@
         @media (max-width: 480px) {
             .hero-left h1 { font-size: 1.8rem; }
             .draggable-reveal-container { height: 350px; }
-            .glass-panel { padding: 40px 20px 20px 20px !important; }
-            .player-name { font-size: 1.3rem !important; }
-            .custom-elite-card .player-stats .stat { font-size: 1rem !important; }
             
-            /* Empilhamento inteligente dos inputs no mobile */
-            .input-squad { flex-direction: column; gap: 15px; }
-            .neon-input { margin-right: 0; width: 100%; }
-            .neon-btn-action { width: 100%; }
+            /* 1. TRUST BAR: Manter tudo em uma linha (Sem quebrar) igual no print */
+            .trust-bar { flex-wrap: nowrap; gap: 5px; padding: 15px 2%; justify-content: space-between; }
+            .logo-item img { height: 14px; }
+            .logo-item span { font-size: 0.5rem; letter-spacing: 1px;}
 
-            .log-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
+            /* 2. CARTAS: O segredo para deixar lado a lado. Usamos a escala (zoom out) */
+            .cards-container { 
+                flex-direction: row; /* Força ficar na mesma linha */
+                flex-wrap: nowrap; /* Não deixa descer pra próxima linha */
+                transform: scale(0.48); /* Reduz as cartas em 52% para caberem perfeitas juntas */
+                transform-origin: top center;
+                gap: 15px;
+                height: 260px; /* Corta a altura fantasma deixada pela escala para não bugar o site */
+                margin-bottom: 0;
+                padding: 0;
+            }
+            .video-background-section { min-height: 280px; padding: 10px 0; }
+            .roster-section { padding: 40px 2%; }
+
+            /* 3. FORMULÁRIO: Manter Input e Botão na mesma linha igual no print */
+            .input-squad { flex-direction: row; gap: 5px; align-items: center; }
+            .neon-input { margin-right: 0; width: 60%; padding: 0 10px; font-size: 0.75rem; height: 45px;}
+            .neon-btn-action { width: 40%; padding: 0 10px; font-size: 0.75rem; height: 45px;}
+            .capture-shield p { font-size: 0.75rem; line-height: 1.4; }
+            .shield-header h2 { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -357,8 +368,8 @@
 
 <section class="roster-section">
     <span style="color: #D4AF37; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 3px; font-weight: 700; margin-bottom: 15px; display: block;">The 750K Legend</span>
-    <h2>Hacksaw Ridge Edition</h2>
-    <p style="color: var(--text-muted); margin-bottom: 40px;">"Please Lord, help me get one more." - The math behind the honor.</p>
+    <h2>Edição Hacksaw Ridge</h2>
+    <p style="color: var(--text-muted); margin-bottom: 40px;">"Por favor, Senhor, ajude-me a conseguir mais uma." - A matemática por trás da honra.</p>
 
     <div class="video-background-section">
         <video class="video-bg" autoplay loop muted playsinline>
@@ -433,13 +444,13 @@
 <div class="capture-shield">
     <div class="shield-header">
         <span class="neon-icon">🪖</span>
-        <h2>PROTOCOL 75: <span class="neon-text-green">ACTIVE RECRUITMENT</span></h2>
+        <h2>PROTOCOL 75: <span class="neon-text-green">RECRUTAMENTO ATIVO</span></h2>
     </div>
-    <p class="crypto-subtext">Liquidity deployment is imminent. Initial ecosystem access is restricted to verified operators. Enter your comms credentials to request a slot in the trench.</p>
+    <p class="crypto-subtext">A implementação da liquidez é iminente. O acesso inicial ao ecossistema está restrito a operadores verificados. Insira suas credenciais de comunicação para solicitar uma vaga na plataforma.</p>
     
     <div class="input-squad">
-        <input type="email" id="soldier-email" placeholder="E-mail Address (Required)" class="neon-input">
-        <button id="whitelist-btn" class="neon-btn-action" onclick="requestAccess()">REQUEST ACCESS</button>
+        <input type="email" id="soldier-email" placeholder="E-mail Address (Obrigatório)" class="neon-input">
+        <button id="whitelist-btn" class="neon-btn-action" onclick="requestAccess()">SOLICITAR ACESSO</button>
     </div>
     <p id="responseText" class="encrypting-text" style="display: none; margin-top: 15px; font-family: monospace;"></p>
 </div>
