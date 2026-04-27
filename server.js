@@ -34,7 +34,7 @@ app.post('/api/save-email', (req, res) => {
 });
 
 // 4. ROTA PRINCIPAL (INDEX)
-app.get('/*', (req, res) => {
+app.get('(.*)', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
