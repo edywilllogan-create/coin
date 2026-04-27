@@ -1,0 +1,14 @@
+# --- SEGREDOS (CRÍTICO) ---
+# Não deixa sua senha do banco e token do bot vazarem pro GitHub
+.env
+.env.local
+
+# --- DEPENDÊNCIAS ---
+# O Railway instala isso sozinho, não precisa enviar
+node_modules/
+
+# --- LOGS E SISTEMA ---
+npm-debug.log*
+.DS_Store
+dist/
+build/
