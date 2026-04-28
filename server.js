@@ -1,66 +1,61 @@
 require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2/promise'); // Usando a versão mais estável para evitar quedas
 const TelegramBot = require('node-telegram-bot-api');
 const path = require('path');
 
 const app = express();
 
-// 1. MIDDLEWARES CRÍTICOS (Isto garante que o e-mail seja lido e não chegue vazio)
+// --- CONFIGURAÇÃO TÁTICA ---
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname)); // Garante que o seu CSS, vídeo e imagens carreguem
+app.use(express.static(__dirname)); // Carrega suas imagens e CSS da raiz
 
-// 2. CONEXÃO COM O BANCO DE DADOS (Blindado para o Railway)
-const db = mysql.createPool(process.env.DATABASE_URL);
-
-// 3. ROTA DE CAPTURA DE RECRUTAS (API)
-app.post('/api/save-email', async (req, res) => {
-    try {
-        const { email } = req.body;
-        
-        if (!email) {
-            return res.status(400).json({ error: "E-mail vazio." });
-        }
-
-        const sql = "INSERT INTO leads (email) VALUES (?)";
-        await db.execute(sql, [email]);
-        
-        console.log(`✅ Novo recruta capturado: ${email}`);
-        res.status(200).json({ message: "Infiltração concluída com sucesso!" });
-    } catch (error) {
-        console.error("❌ Erro ao salvar no banco:", error);
-        res.status(500).json({ error: "Erro interno no servidor." });
-    }
-});
-
-// 4. INICIALIZANDO O BOT (Com proteção anti-crash)
 const token = process.env.TELEGRAM_TOKEN;
+const adminId = process.env.ADMIN_CHAT_ID; // Seu ID que você pegou no @userinfobot
+
+let bot;
 
 if (!token) {
-    console.log("❌ ERRO OPSEC: Token do Telegram não encontrado nas Variáveis do Railway!");
+    console.log("❌ ERRO: Token não configurado no Railway.");
 } else {
-    const bot = new TelegramBot(token, { polling: true });
-    console.log("🟢 Sigma Terminal Online. Monitoring the trenches...");
+    bot = new TelegramBot(token, { polling: true });
+    console.log("🟢 Radar Stealth Online. Aguardando o Comandante.");
 
-    bot.onText(/\/ca/, (msg) => {
-        const chatId = msg.chat.id;
-        const response = `🔒 **SMART CONTRACT (Zero Backdoors)**\n\n\`Awaiting_Official_Sigma_Deploy\`\n\nLiquidity will be 100% burned.\nPaper hands will be left behind.\n**Hold the line.** 🪖`;
-        bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+    // Firewall: Só você tem acesso aos comandos do bot
+    const isOwner = (id) => adminId && id.toString() === adminId.toString();
+
+    bot.onText(/\/status/, (msg) => {
+        if (isOwner(msg.chat.id)) bot.sendMessage(msg.chat.id, "✅ Sistema operando em modo invisível.");
     });
 
-    bot.on('polling_error', (error) => {
-        console.log("⚠️ Aviso do Bot (ignorado para não derrubar o site):", error.message);
+    bot.onText(/\/ca/, (msg) => {
+        if (isOwner(msg.chat.id)) {
+            bot.sendMessage(msg.chat.id, "🔒 **SMART CONTRACT:** `Awaiting_Deploy` 🪖", { parse_mode: 'Markdown' });
+        }
     });
 }
 
-// 5. ROTA PRINCIPAL DA BAZUCA (Garante que a página carregue sempre)
+// --- INTERCEPTAÇÃO DE LEADS (Manda pro seu Telegram) ---
+app.post('/api/save-email', async (req, res) => {
+    const { email } = req.body;
+    if (bot && adminId && email) {
+        try {
+            await bot.sendMessage(adminId, `🚨 **NOVO INVESTIDOR INTERCEPTADO:**\n📧 \`${email}\``, { parse_mode: 'Markdown' });
+            res.status(200).json({ message: "Transmissão concluída." });
+        } catch (e) {
+            console.error("Erro no disparo:", e);
+            res.status(500).send();
+        }
+    } else {
+        res.status(400).json({ error: "Dados incompletos." });
+    }
+});
+
+// --- ROTA BAZUCA (Sempre entrega o site) ---
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 6. LIGANDO O MOTOR
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 [DOSS] Terminal Web ativo na porta ${PORT}`);
+    console.log(`🚀 [DOSS] Unificado e pronto na porta ${PORT}`);
 });
