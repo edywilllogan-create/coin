@@ -1,46 +1,66 @@
-const express = require('express');
-const mysql = require('mysql2');
-const path = require('path');
 require('dotenv').config();
-require('./bot-doss/server.js');
+const express = require('express');
+const mysql = require('mysql2/promise'); // Usando a versão mais estável para evitar quedas
+const TelegramBot = require('node-telegram-bot-api');
+const path = require('path');
 
 const app = express();
+
+// 1. MIDDLEWARES CRÍTICOS (Isto garante que o e-mail seja lido e não chegue vazio)
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname)); // Garante que o seu CSS, vídeo e imagens carreguem
 
-// 1. SERVIR ARQUIVOS ESTÁTICOS
-// Isso garante que o site encontre a pasta /imagens, o CSS e o JS
-app.use(express.static(path.join(__dirname, '/')));
-
-// 2. CONEXÃO COM O BANCO (MYSQL DO RAILWAY)
-// O Railway entrega a variável DATABASE_URL pronta para uso
-const db = mysql.createPool({
-    uri: process.env.DATABASE_URL
-});
+// 2. CONEXÃO COM O BANCO DE DADOS (Blindado para o Railway)
+const db = mysql.createPool(process.env.DATABASE_URL);
 
 // 3. ROTA DE CAPTURA DE RECRUTAS (API)
-app.post('/api/save-email', (req, res) => {
-    const { email } = req.body;
-
-    if (!email) return res.status(400).json({ error: "E-mail vazio." });
-
-    const sql = "INSERT INTO leads (email) VALUES (?)";
-    db.execute(sql, [email], (err, result) => {
-        if (err) {
-            console.error("Erro no SQL:", err);
-            return res.status(500).json({ error: "Erro ao salvar soldado." });
+app.post('/api/save-email', async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ error: "E-mail vazio." });
         }
+
+        const sql = "INSERT INTO leads (email) VALUES (?)";
+        await db.execute(sql, [email]);
+        
+        console.log(`✅ Novo recruta capturado: ${email}`);
         res.status(200).json({ message: "Infiltração concluída com sucesso!" });
-    });
+    } catch (error) {
+        console.error("❌ Erro ao salvar no banco:", error);
+        res.status(500).json({ error: "Erro interno no servidor." });
+    }
 });
 
+// 4. INICIALIZANDO O BOT (Com proteção anti-crash)
+const token = process.env.TELEGRAM_TOKEN;
 
-// 4. ROTA PRINCIPAL (INDEX) - A BAZUCA
+if (!token) {
+    console.log("❌ ERRO OPSEC: Token do Telegram não encontrado nas Variáveis do Railway!");
+} else {
+    const bot = new TelegramBot(token, { polling: true });
+    console.log("🟢 Sigma Terminal Online. Monitoring the trenches...");
+
+    bot.onText(/\/ca/, (msg) => {
+        const chatId = msg.chat.id;
+        const response = `🔒 **SMART CONTRACT (Zero Backdoors)**\n\n\`Awaiting_Official_Sigma_Deploy\`\n\nLiquidity will be 100% burned.\nPaper hands will be left behind.\n**Hold the line.** 🪖`;
+        bot.sendMessage(chatId, response, { parse_mode: 'Markdown' });
+    });
+
+    bot.on('polling_error', (error) => {
+        console.log("⚠️ Aviso do Bot (ignorado para não derrubar o site):", error.message);
+    });
+}
+
+// 5. ROTA PRINCIPAL DA BAZUCA (Garante que a página carregue sempre)
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 5. INICIALIZAÇÃO
+// 6. LIGANDO O MOTOR
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`[DOSS] Terminal Web ativo na porta ${PORT}`);
+    console.log(`🚀 [DOSS] Terminal Web ativo na porta ${PORT}`);
 });
