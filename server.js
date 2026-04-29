@@ -4,37 +4,40 @@ const TelegramBot = require('node-telegram-bot-api');
 const path = require('path');
 
 const app = express();
-
-// --- CONFIGURAÇÃO TÁTICA ---
 app.use(express.json());
-app.use(express.static(__dirname)); // Carrega suas imagens e CSS da raiz
+app.use(express.static(__dirname)); 
 
 const token = process.env.TELEGRAM_TOKEN;
-const adminId = process.env.ADMIN_CHAT_ID; // Seu ID que você pegou no @userinfobot
+const adminId = process.env.ADMIN_CHAT_ID; 
 
 let bot;
 
 if (!token) {
-    console.log("❌ ERRO: Token não configurado no Railway.");
+    console.log("❌ ERRO: Token não configurado.");
 } else {
     bot = new TelegramBot(token, { polling: true });
     console.log("🟢 Radar Stealth Online. Aguardando o Comandante.");
 
-    // Firewall: Só você tem acesso aos comandos do bot
-    const isOwner = (id) => adminId && id.toString() === adminId.toString();
+    bot.onText(/\/(.+)/, (msg) => {
+        const chatId = msg.chat.id.toString();
+        const command = msg.text;
+        
+        console.log(`[RADAR] Mensagem recebida de: ${chatId} | Comando: ${command}`);
 
-    bot.onText(/\/status/, (msg) => {
-        if (isOwner(msg.chat.id)) bot.sendMessage(msg.chat.id, "✅ Sistema operando em modo invisível.");
-    });
-
-    bot.onText(/\/ca/, (msg) => {
-        if (isOwner(msg.chat.id)) {
-            bot.sendMessage(msg.chat.id, "🔒 **SMART CONTRACT:** `Awaiting_Deploy` 🪖", { parse_mode: 'Markdown' });
+        if (adminId && chatId === adminId.toString()) {
+            if (command === '/status') {
+                bot.sendMessage(chatId, "✅ Sistema operando em modo invisível. Eu te reconheço, Comandante.");
+            }
+            if (command === '/ca') {
+                bot.sendMessage(chatId, "🔒 **SMART CONTRACT:** `Awaiting_Deploy` 🪖", { parse_mode: 'Markdown' });
+            }
+        } else {
+            console.log(`[BLOQUEIO] Tentativa ignorada do ID: ${chatId}`);
         }
     });
 }
 
-// --- INTERCEPTAÇÃO DE LEADS (Manda pro seu Telegram) ---
+// Intercepta o e-mail e manda pro seu Telegram
 app.post('/api/save-email', async (req, res) => {
     const { email } = req.body;
     if (bot && adminId && email) {
@@ -50,7 +53,7 @@ app.post('/api/save-email', async (req, res) => {
     }
 });
 
-// --- ROTA BAZUCA (Sempre entrega o site) ---
+// Mantém o site online
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });

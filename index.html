@@ -7,6 +7,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <style>
+          /* No seu style.css */
+.terminal-box {
+    background: rgba(0, 20, 0, 0.9);
+    border: 1px solid #00ff00;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.encrypted-text {
+    color: #555; /* Cor cinza para parecer oculto */
+    letter-spacing: 2px;
+}
+
+.blink-text {
+    color: #00ff00;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.progress-bar {
+    width: 64%; /* Controle isso conforme o hype aumenta */
+    height: 10px;
+    background: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+
+       
+
         /* =========================================
            1. VARIÁVEIS E SETUP GERAL
         ========================================= */
@@ -457,32 +492,14 @@
     <p id="responseText" class="encrypting-text" style="display: none; margin-top: 15px; font-family: monospace;"></p>
 </div>
 
-<div class="glass-security-shield">
-    <div class="shield-header">
-        <span class="neon-icon">🛡️</span>
-        <h2>SYSTEM SECURITY STATUS: <span class="neon-text-green">SECURED</span></h2>
+<div class="terminal-box">
+    <p class="status-text">> SCANNING SOLANA NETWORK...</p>
+    <p class="status-text">> TARGET: $DOSS PROTOCOL 75</p>
+    <p class="status-text">> CONTRACT_ADDRESS: <span class="encrypted-text">7xKx********************9zQ</span></p>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
     </div>
-    <div class="security-logs">
-        <div class="log-item">
-            <span class="status-dot green"></span>
-            <span class="log-label">MINT AUTHORITY:</span>
-            <span class="log-value">REVOKED (Supply locked at 750k)</span>
-        </div>
-        <div class="log-item">
-            <span class="status-dot green"></span>
-            <span class="log-label">FREEZE AUTHORITY:</span>
-            <span class="log-value">REVOKED (Wallet freezing impossible)</span>
-        </div>
-        <div class="log-item">
-            <span class="status-dot green"></span>
-            <span class="log-label">LIQUIDITY POOL:</span>
-            <span class="log-value pending">AWAITING 100% BURN</span>
-        </div>
-        <div class="log-item ca-box">
-            <span class="log-label">OFFICIAL CONTRACT (CA):</span>
-            <code class="ca-code">3CHztczsM1b8QVREnLiXTTginKcCmEcybrSGPasyhf4C</code>
-        </div>
-    </div>
+    <p class="blink-text">STATUS: DECRYPTING DATA [64%]...</p>
 </div>
 
 <div id="chat-toggle" onclick="toggleSigmaChat()">
