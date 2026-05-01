@@ -7,6 +7,149 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <style>
+/* 1. Aumenta o espaço preto no topo */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinha do topo para baixo */
+    min-height: 190vh; /* Aumenta a "tela" total para dar mais rolagem */
+    padding-top: 150px; /* Aumenta a parte preta superior conforme solicitado */
+    background-color: #000; /* Garante que o fundo do topo seja sólido */
+}
+
+/* 2. Posiciona o CA na parte de baixo do vídeo */
+.ca-overlay {
+    position: absolute; /* Garante que ele flutue sobre o vídeo */
+    bottom: -1%; /* Isso empurra ele para a parte de baixo (ajuste o número se quiser mais alto ou mais baixo) */
+    left: 50%; /* Mantém centralizado horizontalmente */
+    transform: translateX(-50%); /* Corrige o alinhamento perfeito no centro */
+    
+    /* Mantendo o visual que você já tem: */
+    background: rgba(0, 0, 0, 0.85);
+    padding: 18px 30px;
+    border: 1px solid #00ff66;
+    z-index: 10;
+}
+
+
+
+
+
+
+        .hero-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  filter: brightness(40%); /* Escurece o vídeo para o CA brilhar */
+}
+
+.ca-box {
+  background: rgba(0, 255, 102, 0.1);
+  border: 1px solid #00ff66;
+  padding: 15px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ca-box:hover {
+  background: rgba(0, 255, 102, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+}.hero-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  filter: brightness(40%); /* Escurece o vídeo para o CA brilhar */
+}
+
+.ca-box {
+  background: rgba(0, 255, 102, 0.1);
+  border: 1px solid #00ff66;
+  padding: 15px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ca-box:hover {
+  background: rgba(0, 255, 102, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+}
+.hero-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  filter: brightness(40%); /* Escurece o vídeo para o CA brilhar */
+}
+
+.ca-box {
+  background: rgba(0, 255, 102, 0.1);
+  border: 1px solid #00ff66;
+  padding: 15px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  color: #00ff66;
+  text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+  transition: all 0.3s ease;
+}
+
+.ca-box:hover {
+  background: rgba(0, 255, 102, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+}
+
+
+
 
         .main-logo {
     height: 50px; /* Ajuste conforme o tamanho da sua logo */
@@ -564,6 +707,21 @@
     <source src="imagens/musica.mp3" type="audio/mpeg">
 </audio>
 
+<div class="hero-container">
+  <!-- O Loop de Vídeo -->
+  <div class="video-background-section">
+        <video class="video-bg" autoplay loop muted playsinline>
+                <source src="imagens/DOSSLOP.mp4" type="video/mp4">
+            </video>
+  <!-- Container do Contrato -->
+  <div class="ca-overlay">
+    <p class="ca-label">OFFICIAL CONTRACT (CA):</p>
+    <div class="ca-box" onclick="copyCA()">
+      <span id="ca-address">3xMnHj1SBo85mTDDq1RunVv1upi4bbW8qhtqUfB8pump</span>
+      <i class="copy-icon">📋</i>
+    </div>
+  </div>
+</div>
 <script>
     // ------------------------------------------------
     // 1. INICIALIZAÇÃO E SPLASH SCREEN
