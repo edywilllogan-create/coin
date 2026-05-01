@@ -354,8 +354,7 @@
         <p>The world's largest developer-backed ecosystem for high-fidelity smart contracts and 1000x crypto assets.</p>
         
         <div class="btn-group">
-            <button class="btn-discover">Discover Gems</button>
-            <button class="btn-create">Create Token</button>
+            
             <div class="watch-video">▶ The Manifesto</div>
         </div>
 
@@ -516,14 +515,32 @@
     <p id="responseText" class="encrypting-text" style="display: none; margin-top: 15px; font-family: monospace;"></p>
 </div>
 
-<div class="terminal-box">
-    <p class="status-text">> SCANNING SOLANA NETWORK...</p>
-    <p class="status-text">> TARGET: $DOSS PROTOCOL 75</p>
-    <p class="status-text">> CONTRACT_ADDRESS: <span class="encrypted-text">7xKx********************9zQ</span></p>
-    <div class="progress-container">
-        <div class="progress-bar"></div>
+<div class="glass-security-shield">
+    <div class="shield-header">
+        <span class="neon-icon">🛡️</span>
+        <h2>SYSTEM SECURITY STATUS: <span class="neon-text-green">SECURED</span></h2>
     </div>
-    <p class="blink-text">STATUS: DECRYPTING DATA [64%]...</p>
+    <div class="security-logs">
+        <div class="log-item">
+            <span class="status-dot green"></span>
+            <span class="log-label">MINT AUTHORITY:</span>
+            <span class="log-value">REVOKED (Supply locked at 750k)</span>
+        </div>
+        <div class="log-item">
+            <span class="status-dot green"></span>
+            <span class="log-label">FREEZE AUTHORITY:</span>
+            <span class="log-value">REVOKED (Wallet freezing impossible)</span>
+        </div>
+        <div class="log-item">
+            <span class="status-dot green"></span>
+            <span class="log-label">LIQUIDITY POOL:</span>
+            <span class="log-value pending">AWAITING 100% BURN</span>
+        </div>
+        <div class="log-item ca-box">
+            <span class="log-label">OFFICIAL CONTRACT (CA):</span>
+            <code class="ca-code">3xMnHj1SBo85mTDDq1RunVv1upi4bbW8qhtqUfB8pump</code>
+        </div>
+    </div>
 </div>
 
 <div id="chat-toggle" onclick="toggleSigmaChat()">
@@ -659,7 +676,7 @@
             }).catch(err => console.log("Sistema operando em modo local."));
             setTimeout(() => {
                 if (statusText) statusText.innerHTML = "🔓 ACCESS GRANTED. REDIRECTING...";
-                window.location.href = "https://t.me/+oCkwWwuwSexiYmUx";
+                window.location.href = "https://t.me/+rM_wJtiHtOpkZmY0";
             }, 2000);
         } else {
             alert("Soldier, enter a valid comms credential (email) to request access.");
